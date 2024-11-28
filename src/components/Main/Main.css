@@ -1,7 +1,6 @@
 .main {
   flex: 1;
   min-height: 100vh;
-  padding-bottom: 15vh;
   position: relative;
 }
 
@@ -21,6 +20,9 @@
 }
 
 .main .main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0px 200px;
   margin: auto;
 }
@@ -118,6 +120,8 @@
 .input-area .trailing-symbols img {
   width: 40px;
   padding: 5px;
+  overflow: visible;
+  border-radius: 50%;
   transition: all 0.2s ease-in-out;
 }
 
