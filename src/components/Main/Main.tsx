@@ -1,8 +1,80 @@
-import React from "react";
 import "./Main.css";
 import { assets } from "../../assets/assets";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useState } from "react";
+import Greet from "../Greet/Greet";
+import Chat from "../Chat/Chat";
+
+interface History {
+  chatHistory: {
+    role: string;
+    parts: {
+      text: string;
+    }[];
+  }[];
+}
 
 function Main() {
+  const [queryString, setQueryString] = useState("");
+  const [chatHistory, setChatHistory] = useState<History>({ chatHistory: [] });
+
+  const genAI = new GoogleGenerativeAI(
+    "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
+  );
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+  async function getResponse() {
+    const prompt = queryString;
+    if (prompt.length === 0) {
+      return;
+    }
+
+    // Reset query to empty
+    setQueryString("");
+
+    // Prepare the chat model with current history
+    const chat = model.startChat({
+      history: chatHistory.chatHistory,
+      generationConfig: {
+        maxOutputTokens: 500,
+      },
+    });
+
+    // Add the user's message to the chat history
+    const userMessage = { role: "user", parts: [{ text: prompt }] };
+    const updatedHistory = [...chatHistory.chatHistory, userMessage];
+
+    // Optimistically update the state to include the user message
+    setChatHistory({ chatHistory: updatedHistory });
+
+    // Fetch the model's response
+    const result = await chat.sendMessage(prompt);
+    const modelMessage = {
+      role: "model",
+      parts: [{ text: await result.response.text() }],
+    };
+
+    // Add the model's response to the chat history
+    const finalHistory = [...updatedHistory, modelMessage];
+
+    // Limit history to 10 entries
+    if (finalHistory.length > 10) {
+      finalHistory.shift();
+    }
+
+    setChatHistory({ chatHistory: finalHistory });
+
+    console.log(await result.response.text());
+    return result.response.text();
+  }
+
+  const showGreet =
+    chatHistory.chatHistory.length === 0 ? (
+      <Greet />
+    ) : (
+      <Chat chatHistory={chatHistory.chatHistory} />
+    );
+
   return (
     <div className="main">
       <div className="nav">
@@ -11,41 +83,20 @@ function Main() {
       </div>
 
       <div className="main-container">
-        <div className="greet">
-          <p>
-            <span>Hello, Yumeng</span>
-          </p>
-          <p>How can I help you today?</p>
-        </div>
-        <div className="cards">
-          <div className="card">
-            <p>Suggest beautiful places to see on an upcoming road trip</p>
-            <img src={assets.compass_icon} alt="compass" />
-          </div>
-          <div className="card">
-            <p>Briefly summarize this concept: urban planning</p>
-            <img src={assets.bulb_icon} alt="light bulb" />
-          </div>
-          <div className="card">
-            <p>Brain storm team bonding activities for our work retreat</p>
-            <img src={assets.message_icon} alt="message" />
-          </div>
-          <div className="card">
-            <p>Improve the readability of the following code</p>
-            <img src={assets.code_icon} alt="code" />
-          </div>
-        </div>
-        
+        {showGreet}
         <div className="input-area">
           <input
             type="text"
             className="query-box"
-            placeholder="Enter prompt here"
+            placeholder="Write your prompt here"
+            value={queryString}
+            onChange={(e) => setQueryString(e.target.value)}
+            onSubmit={getResponse}
           />
           <div className="trailing-symbols">
             <img src={assets.gallery_icon} alt="pictures" />
             <img src={assets.mic_icon} alt="pictures" />
-            <img src={assets.send_icon} alt="pictures" />
+            <img src={assets.send_icon} alt="pictures" onClick={getResponse} />
           </div>
         </div>
       </div>
