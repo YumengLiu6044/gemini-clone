@@ -11,28 +11,30 @@ function Main() {
       </div>
 
       <div className="main-container">
-        <div className="greet">
-          <p>
-            <span>Hello, Yumeng</span>
-          </p>
-          <p>How can I help you today?</p>
-        </div>
-        <div className="cards">
-          <div className="card">
-            <p>Suggest beautiful places to see on an upcoming road trip</p>
-            <img src={assets.compass_icon} alt="compass" />
+        <div>
+          <div className="greet">
+            <p>
+              <span>Hello, Yumeng</span>
+            </p>
+            <p>How can I help you today?</p>
           </div>
-          <div className="card">
-            <p>Briefly summarize this concept: urban planning</p>
-            <img src={assets.bulb_icon} alt="light bulb" />
-          </div>
-          <div className="card">
-            <p>Brain storm team bonding activities for our work retreat</p>
-            <img src={assets.message_icon} alt="message" />
-          </div>
-          <div className="card">
-            <p>Improve the readability of the following code</p>
-            <img src={assets.code_icon} alt="code" />
+          <div className="cards">
+            <div className="card">
+              <p>Suggest beautiful places to see on an upcoming road trip</p>
+              <img src={assets.compass_icon} alt="compass" />
+            </div>
+            <div className="card">
+              <p>Briefly summarize this concept: urban planning</p>
+              <img src={assets.bulb_icon} alt="light bulb" />
+            </div>
+            <div className="card">
+              <p>Brain storm team bonding activities for our work retreat</p>
+              <img src={assets.message_icon} alt="message" />
+            </div>
+            <div className="card">
+              <p>Improve the readability of the following code</p>
+              <img src={assets.code_icon} alt="code" />
+            </div>
           </div>
         </div>
         <div className="input-area">
@@ -42,9 +44,9 @@ function Main() {
             placeholder="Enter prompt here"
           />
           <div className="trailing-symbols">
-            <img src={assets.gallery_icon} alt="pictures"/>
-            <img src={assets.mic_icon} alt="pictures"/>
-            <img src={assets.send_icon} alt="pictures"/>
+            <img src={assets.gallery_icon} alt="pictures" />
+            <img src={assets.mic_icon} alt="pictures" />
+            <img src={assets.send_icon} alt="pictures" />
           </div>
         </div>
       </div>
