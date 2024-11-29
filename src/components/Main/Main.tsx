@@ -36,7 +36,7 @@ function Main() {
     const chat = model.startChat({
       history: chatHistory.chatHistory,
       generationConfig: {
-        maxOutputTokens: 500,
+        maxOutputTokens: 250,
       },
     });
 
