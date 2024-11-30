@@ -8,6 +8,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+.sidebar .hidden {
+
+}
+
 .sidebar::after {
   transition: all 0.3s ease-in-out;
 }
@@ -47,12 +51,19 @@
 .sidebar .recent-entry {
   display: flex;
   justify-content: flex-start;
-  gap: 20px;
+  gap: 10px;
   margin-top: 20px;
   padding: 10px;
   border-radius: 50px;
   color: #474747;
   transition: all 0.2s ease-in-out;
+}
+
+.sidebar .recent-entry p {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar .recent-entry::after {
@@ -67,4 +78,18 @@
   display: flex;
   flex-direction: column;
 
+}
+
+.trash-icon {
+  border-radius: 50%;
+  overflow: visible;
+  padding: 3px;
+  transition: all 0.2s ease-in-out;
+}
+
+.trash-icon::after {
+  transition: all 0.2s ease-in-out;
+}
+.trash-icon:hover {
+  background-color: rgba(139, 139, 139, 0.317);
 }

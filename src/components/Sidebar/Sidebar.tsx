@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { assets } from "../../assets/assets";
 import "./Sidebar.css";
+import RecentRow from "./RecentRow";
 
 function Sidebar() {
   const [showDetail, setShowDetail] = useState(true);
@@ -25,10 +26,7 @@ function Sidebar() {
         {showDetail && (
           <div className="recent">
             <p className="recent-title">Recent</p>
-            <div className="recent-entry">
-              <img src={assets.message_icon} />
-              <p>What is react ...</p>
-            </div>
+            <RecentRow summary="summary with a lot of text a lot and a lot" onTrashClick={() => {}}/>
           </div>
         )}
       </div>
