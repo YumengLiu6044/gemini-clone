@@ -1,4 +1,3 @@
-import React, { MouseEventHandler } from "react";
 import { assets } from "../../assets/assets";
 
 interface GreetProps {

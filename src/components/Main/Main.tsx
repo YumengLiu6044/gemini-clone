@@ -17,7 +17,6 @@ interface History {
 function Main() {
   const [queryString, setQueryString] = useState("");
   const [chatHistory, setChatHistory] = useState<History>({ chatHistory: [] });
-  const [isLoading, setIsLoading] = useState(false);
 
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
@@ -46,8 +45,6 @@ function Main() {
       chatHistory: updatedHistory,
     });
 
-    setIsLoading(true);
-
     const result = await chat.sendMessageStream(prompt);
     let response = "";
     for await (const chunk of result.stream) {
@@ -70,7 +67,7 @@ function Main() {
         }}
       />
     ) : (
-      <Chat chatHistory={chatHistory.chatHistory} isLoading={isLoading} />
+      <Chat chatHistory={chatHistory.chatHistory} />
     );
 
   return (
