@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import Markdown from "react-markdown";
 import "./Chat.css";
 import { assets } from "../../assets/assets";
 
@@ -16,7 +16,7 @@ const Chat = ({ chatHistory }: ChatProps) => {
     return (
       <div className="chat-row" key={String(index)}>
         <img src={chat.role === "user" ? assets.user_icon : assets.gemini_icon} />
-        <p>{chat.parts[0].text}</p>
+        <Markdown className="response">{chat.parts[0].text}</Markdown>
       </div>
     );
   });

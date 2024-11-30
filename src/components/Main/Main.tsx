@@ -17,6 +17,7 @@ interface History {
 function Main() {
   const [queryString, setQueryString] = useState("");
   const [chatHistory, setChatHistory] = useState<History>({ chatHistory: [] });
+  const TOKEN_LIMIT = 500;
 
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
@@ -34,14 +35,23 @@ function Main() {
 
     // Prepare the chat model with current history
     const chat = model.startChat({
-      history: chatHistory.chatHistory,
+      history: [
+        ...chatHistory.chatHistory,
+        {
+          role: "user",
+          parts: [{ text: `Limit your response to ${TOKEN_LIMIT} words` }],
+        },
+      ],
       generationConfig: {
-        maxOutputTokens: 250,
+        maxOutputTokens: TOKEN_LIMIT,
       },
     });
 
     // Add the user's message to the chat history
-    const userMessage = { role: "user", parts: [{ text: prompt }] };
+    const userMessage = {
+      role: "user",
+      parts: [{ text: prompt }],
+    };
     const updatedHistory = [...chatHistory.chatHistory, userMessage];
 
     // Optimistically update the state to include the user message
