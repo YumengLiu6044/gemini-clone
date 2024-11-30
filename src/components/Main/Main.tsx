@@ -1,7 +1,7 @@
 import "./Main.css";
 import { assets } from "../../assets/assets";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Greet from "../Greet/Greet";
 import Chat from "../Chat/Chat";
 
@@ -17,6 +17,7 @@ interface History {
 function Main() {
   const [queryString, setQueryString] = useState("");
   const [chatHistory, setChatHistory] = useState<History>({ chatHistory: [] });
+  const [isLoading, setIsLoading] = useState(false);
 
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
@@ -29,45 +30,36 @@ function Main() {
       return;
     }
 
-    // Reset query to empty
     setQueryString("");
 
-    // Prepare the chat model with current history
     const chat = model.startChat({
       history: chatHistory.chatHistory,
     });
 
-    // Add the user's message to the chat history
     const userMessage = {
       role: "user",
       parts: [{ text: prompt }],
     };
     const updatedHistory = [...chatHistory.chatHistory, userMessage];
 
-    // Optimistically update the state to include the user message
     setChatHistory({
       chatHistory: updatedHistory,
     });
 
-    // Fetch the model's response
-    const result = await chat.sendMessage(prompt);
-    const modelMessage = {
-      role: "model",
-      parts: [{ text: result.response.text() }],
-    };
+    setIsLoading(true);
 
-    // Add the model's response to the chat history
-    const finalHistory = [...updatedHistory, modelMessage];
-
-    // Limit history to 10 entries
-    if (finalHistory.length > 10) {
-      finalHistory.shift();
+    const result = await chat.sendMessageStream(prompt);
+    let response = "";
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      response += chunkText;
+      const modelMessage = {
+        role: "model",
+        parts: [{ text: response }],
+      };
+      const finalHistory = [...updatedHistory, modelMessage];
+      setChatHistory({ chatHistory: finalHistory });
     }
-
-    setChatHistory({ chatHistory: finalHistory });
-
-    console.log(result.response.text());
-    return result.response.text();
   }
 
   const showGreet =
@@ -78,7 +70,7 @@ function Main() {
         }}
       />
     ) : (
-      <Chat chatHistory={chatHistory.chatHistory} />
+      <Chat chatHistory={chatHistory.chatHistory} isLoading={isLoading} />
     );
 
   return (
@@ -109,9 +101,13 @@ function Main() {
           <div className="trailing-symbols">
             <img src={assets.gallery_icon} alt="pictures" />
             <img src={assets.mic_icon} alt="pictures" />
-            <img src={assets.send_icon} alt="pictures" onClick={() => {
-              getResponse(queryString);
-            }} />
+            <img
+              src={assets.send_icon}
+              alt="pictures"
+              onClick={() => {
+                getResponse(queryString);
+              }}
+            />
           </div>
         </div>
       </div>

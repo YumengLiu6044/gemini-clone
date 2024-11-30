@@ -10,9 +10,11 @@ interface ChatProps {
       text: string;
     }[];
   }[];
+
+  isLoading: boolean
 }
 
-const Chat = ({ chatHistory }: ChatProps) => {
+const Chat = ({ chatHistory, isLoading }: ChatProps) => {
   const listRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
