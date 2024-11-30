@@ -45,13 +45,15 @@ function Main() {
     const updatedHistory = [...chatHistory.chatHistory, userMessage];
 
     // Optimistically update the state to include the user message
-    setChatHistory({ chatHistory: updatedHistory });
+    setChatHistory({
+      chatHistory: updatedHistory,
+    });
 
     // Fetch the model's response
     const result = await chat.sendMessage(prompt);
     const modelMessage = {
       role: "model",
-      parts: [{ text: await result.response.text() }],
+      parts: [{ text: result.response.text() }],
     };
 
     // Add the model's response to the chat history
@@ -64,7 +66,7 @@ function Main() {
 
     setChatHistory({ chatHistory: finalHistory });
 
-    console.log(await result.response.text());
+    console.log(result.response.text());
     return result.response.text();
   }
 
@@ -91,6 +93,11 @@ function Main() {
             placeholder="Write your prompt here"
             value={queryString}
             onChange={(e) => setQueryString(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                getResponse();
+              }
+            }}
             onSubmit={getResponse}
           />
           <div className="trailing-symbols">
