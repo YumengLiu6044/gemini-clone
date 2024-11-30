@@ -1,7 +1,7 @@
 import "./Main.css";
 import { assets } from "../../assets/assets";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Greet from "../Greet/Greet";
 import Chat from "../Chat/Chat";
 
@@ -35,13 +35,7 @@ function Main() {
 
     // Prepare the chat model with current history
     const chat = model.startChat({
-      history: [
-        ...chatHistory.chatHistory,
-        {
-          role: "user",
-          parts: [{ text: `Limit your response to ${TOKEN_LIMIT} words` }],
-        },
-      ],
+      history: chatHistory.chatHistory,
       generationConfig: {
         maxOutputTokens: TOKEN_LIMIT,
       },
