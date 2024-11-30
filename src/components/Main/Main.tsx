@@ -17,7 +17,6 @@ interface History {
 function Main() {
   const [queryString, setQueryString] = useState("");
   const [chatHistory, setChatHistory] = useState<History>({ chatHistory: [] });
-  const TOKEN_LIMIT = 500;
 
   const genAI = new GoogleGenerativeAI(
     "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
