@@ -24,8 +24,8 @@ function Main() {
   );
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  async function getResponse() {
-    const prompt = queryString;
+  async function getResponse(query: string) {
+    const prompt = query;
     if (prompt.length === 0) {
       return;
     }
@@ -73,7 +73,11 @@ function Main() {
 
   const showGreet =
     chatHistory.chatHistory.length === 0 ? (
-      <Greet />
+      <Greet
+        onClickCard={(prompt: string) => {
+          getResponse(prompt);
+        }}
+      />
     ) : (
       <Chat chatHistory={chatHistory.chatHistory} />
     );
@@ -96,15 +100,19 @@ function Main() {
             onChange={(e) => setQueryString(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                getResponse();
+                getResponse(queryString);
               }
             }}
-            onSubmit={getResponse}
+            onSubmit={() => {
+              getResponse(queryString);
+            }}
           />
           <div className="trailing-symbols">
             <img src={assets.gallery_icon} alt="pictures" />
             <img src={assets.mic_icon} alt="pictures" />
-            <img src={assets.send_icon} alt="pictures" onClick={getResponse} />
+            <img src={assets.send_icon} alt="pictures" onClick={() => {
+              getResponse(queryString);
+            }} />
           </div>
         </div>
       </div>
