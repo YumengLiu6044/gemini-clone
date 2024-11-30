@@ -33,7 +33,11 @@ const Chat = ({ chatHistory }: ChatProps) => {
     );
   });
 
-  return <div className="chat-section" ref={listRef}>{chatRow}</div>;
+  return (
+    <div className="chat-section" ref={listRef}>
+      {chatRow}
+    </div>
+  );
 };
 
 export default Chat;

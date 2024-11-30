@@ -36,9 +36,6 @@ function Main() {
     // Prepare the chat model with current history
     const chat = model.startChat({
       history: chatHistory.chatHistory,
-      generationConfig: {
-        maxOutputTokens: TOKEN_LIMIT,
-      },
     });
 
     // Add the user's message to the chat history
