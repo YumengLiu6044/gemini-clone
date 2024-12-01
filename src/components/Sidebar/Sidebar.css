@@ -8,10 +8,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-.sidebar .hidden {
-
-}
-
 .sidebar::after {
   transition: all 0.3s ease-in-out;
 }
@@ -28,7 +24,9 @@
 
 .sidebar .new-chat {
   display: flex;
+  font-size: large;
   align-items: center;
+  justify-content: center;
   flex-direction: row;
   background-color: rgba(206, 206, 206, 0.573);
   border-radius: 30px;
@@ -37,6 +35,13 @@
   color: gray;
   gap: 15px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.sidebar .new-chat::after {
+  transition: all 0.2s ease-in-out;
+}
+.sidebar .new-chat:hover {
+  background-color: rgba(206, 206, 206, 0.783);
 }
 
 .sidebar .recent {
@@ -60,7 +65,7 @@
 }
 
 .sidebar .recent-entry p {
-  max-width: 120px;
+  max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
