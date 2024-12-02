@@ -36,7 +36,7 @@ const Chat = ({ chatHistory }: ChatProps) => {
 
   return (
     <div className="chat-section" ref={listRef}>
-      {chatRow}
+      { chatRow}
     </div>
   );
 };

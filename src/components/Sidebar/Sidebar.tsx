@@ -3,7 +3,19 @@ import { assets } from "../../assets/assets";
 import "./Sidebar.css";
 import RecentRow from "./RecentRow";
 
-function Sidebar() {
+interface SidebarProps {
+  summaryList: string[];
+  onTrashClick: (index: number) => void;
+  onNewChatClick: () => void;
+  onRecentRowClick: (index: number) => void;
+}
+
+function Sidebar({
+  summaryList,
+  onTrashClick,
+  onNewChatClick,
+  onRecentRowClick,
+}: SidebarProps) {
   const [showDetail, setShowDetail] = useState(true);
 
   const handleMenuClick = () => {
@@ -19,14 +31,27 @@ function Sidebar() {
           alt="menu"
           onClick={handleMenuClick}
         />
-        <div className="new-chat">
+        <div className="new-chat" onClick={onNewChatClick}>
           <img src={assets.plus_icon} />
           {showDetail && <p>New Chat</p>}
         </div>
         {showDetail && (
           <div className="recent">
             <p className="recent-title">Recent</p>
-            <RecentRow summary="summary with a lot of text a lot and a lot" onTrashClick={() => {}}/>
+            {summaryList.map((item, index) => {
+              return (
+                <RecentRow
+                  id={String(index)}
+                  summary={item}
+                  onTrashClick={() => {
+                    onTrashClick(index);
+                  }}
+                  onRecentRowClick={() => {
+                    onRecentRowClick(index);
+                  }}
+                />
+              );
+            })}
           </div>
         )}
       </div>

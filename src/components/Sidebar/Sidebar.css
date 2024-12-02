@@ -65,7 +65,7 @@
 }
 
 .sidebar .recent-entry p {
-  max-width: 150px;
+  width: 120px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
