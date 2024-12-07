@@ -20,12 +20,13 @@ function Main() {
   const [queryString, setQueryString] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const genAI = new GoogleGenerativeAI(
-    "AIzaSyDYDk_Cc3YVKUPCj_7Bm7LsmaZwQbR7l-w"
-  );
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   async function getResponse(query: string) {
+    if (isLoading) {
+      return;
+    }
     let chatHistory = historyList[selectedIndex];
     const prompt = query;
     if (prompt.length === 0) {
@@ -66,7 +67,7 @@ function Main() {
   }
 
   function handleArrayMutation(newElement: HistoryArray) {
-    let newArray = historyList;
+    const newArray = [...historyList];
     newArray[selectedIndex] = newElement;
     setHistoryList(newArray);
   }
