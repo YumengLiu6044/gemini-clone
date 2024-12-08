@@ -9,7 +9,7 @@ function Greet({ onClickCard }: GreetProps) {
     <>
       <div className="greet">
         <p>
-          <span>Hello, Yumeng</span>
+          <span>Hello</span>
         </p>
         <p>How can I help you today?</p>
       </div>
